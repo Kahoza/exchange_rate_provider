@@ -30,4 +30,8 @@ The API expose the following endpoints;
 - Provide better styling in the views 
   - Use font-size instead of h1
   - Add classes for styling 
-- Enhance form protection. At the moment we use `form_for`to get the input from the user and process the exchange rate request, and though the form comes with built in security, we could further protect the application by validating the inputs or using strong parameters in the controllers to avoid data injection. 
+- Enhance form protection. At the moment we use `form_for`to get the input from the user and process the exchange rate request, and though the form comes with built in security, we could further protect the application by validating the inputs or using strong parameters in the controllers to avoid data injection, for example
+```
+params.require(:exchange_rate).permit(:amount, :currency)
+```
+- Look at the comments in the code to apply the changes.

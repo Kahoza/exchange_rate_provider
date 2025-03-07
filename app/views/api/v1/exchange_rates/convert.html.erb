@@ -1,4 +1,7 @@
 <div class="centered-form">
+  <% if flash[:alert] %>
+    <div class="alert alert-danger"><%= flash[:alert] %></div>
+  <% end %>
   <h1>Currency Converter</h1>
   <div class="form-container">
     <%= form_with url: convert_api_v1_exchange_rates_path, method: :post, remote: true do |form| %>

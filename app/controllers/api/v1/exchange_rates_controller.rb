@@ -52,7 +52,7 @@ module Api
           @converted_amount = (@input_amount * @rate[:rate]).round(2)
           respond_to do |format|
             format.html { render :convert }
-            format.json { render json: conversion_result, status: :ok }
+            format.json { render json: { converted_amount: @converted_amount }, status: :ok }
           end
         end
       rescue StandardError => e
@@ -85,10 +85,21 @@ module Api
       end
 
       def fetch_exchange_rates
-        @rates = Rails.cache.fetch("exchange_rates", expires_in: 24.hours) do
-          FetchCnbExchangeRates.call
+        begin
+          @rates = Rails.cache.fetch("exchange_rates", expires_in: 24.hours) do
+            FetchCnbExchangeRates.call
+          end
+        rescue StandardError => e
+          Rails.logger.error("Error fetching exchange rates: #{e.message}")
+          handle_internal_error
         end
       end
+
+      # def fetch_exchange_rates
+      #   @rates = Rails.cache.fetch("exchange_rates", expires_in: 24.hours) do
+      #     FetchCnbExchangeRates.call
+      #   end
+      # end
     end
   end
 end
