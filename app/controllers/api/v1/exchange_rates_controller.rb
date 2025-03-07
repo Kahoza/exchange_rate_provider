@@ -50,9 +50,6 @@ module Api
         end
       end
 
-
-      private
-
       def fetch_exchange_rates
         @rates = Rails.cache.fetch("exchange_rates", expires_in: 24.hours) do
           FetchCnbExchangeRates.call
