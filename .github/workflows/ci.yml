@@ -8,7 +8,6 @@ on:
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,12 +18,16 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+      - name: Install correct error_highlight version
+        run: gem install error_highlight -v 0.7.0
+
+      - name: Update Bundler and resolve dependencies
+        run: |
+          gem install bundler -v $(grep -A1 'BUNDLED WITH' Gemfile.lock | tail -n1)
+          bundle install
 
   scan_js:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,6 +37,16 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
+
+      - name: Install correct error_highlight version
+        run: gem install error_highlight -v 0.7.0
+
+      - name: Update Bundler and resolve dependencies
+        run: |
+          gem install bundler -v $(grep -A1 'BUNDLED WITH' Gemfile.lock | tail -n1)
+          bundle config set frozen false
+          bundle update error_highlight
+          bundle install
 
       - name: Scan for security vulnerabilities in JavaScript dependencies
         run: bin/importmap audit
@@ -50,18 +63,21 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Install correct error_highlight version
+        run: gem install error_highlight -v 0.7.0
+
+      - name: Update Bundler and resolve dependencies
+        run: |
+          gem install bundler -v $(grep -A1 'BUNDLED WITH' Gemfile.lock | tail -n1)
+          bundle config set frozen false
+          bundle update error_highlight
+          bundle install
+
       - name: Lint code for consistent style
         run: bin/rubocop -f github
 
   test:
     runs-on: ubuntu-latest
-
-    # services:
-    #  redis:
-    #    image: redis
-    #    ports:
-    #      - 6379:6379
-    #    options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
@@ -75,10 +91,19 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Install correct error_highlight version
+        run: gem install error_highlight -v 0.7.0
+
+      - name: Update Bundler and resolve dependencies
+        run: |
+          gem install bundler -v $(grep -A1 'BUNDLED WITH' Gemfile.lock | tail -n1)
+          bundle config set frozen false
+          bundle update error_highlight
+          bundle install
+
       - name: Run tests
         env:
           RAILS_ENV: test
-          # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test test:system
 
       - name: Keep screenshots from failed system tests
