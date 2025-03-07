@@ -19,9 +19,13 @@ The solution has to be buildable, runnable and the test program should output th
 ### Proposed solution
 This project uses a simple basic Ruby on Rails application, that exposes a very basic UI, so the customer can interact with the endpoints in an easier way.
 The api includes versioning, allowing future updates without affecting current users.
-The service to fetch the exchange rates is cached for 24 hours, as the input file that we use from the Czech bank uses the word daily, so we understand this information is udpated every 24 hours.
+The service to fetch the exchange rates is cached for 24 hours, as the input file that we use from the Czech bank uses the word daily, so we understand this information is udpated every 24 hours.  
 The API expose the following endpoints;
 - `/api/v1/exchange_rates` → Lists all the currencies exchange rate
+- `/api/v1/exchange_rates/currency` → Displays the exchange rate for a specific currency
 
 ### Future improvements
 - Provides Swagger documentation and testing endpoints.
+- Provide better styling in the views 
+  - Use font-size instead of h1
+  - Add classes for styling 

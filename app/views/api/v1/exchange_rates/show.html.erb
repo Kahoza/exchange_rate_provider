@@ -1,0 +1,7 @@
+<div class="center-div">
+  <h1>Exchange Rate for <%= @rate[:currency] %> (<%= @rate[:code] %>)</h1>
+  <p><strong>Country:</strong> <%= @rate[:country] %></p>
+  <p><strong>Amount:</strong> <%= @rate[:amount] %></p>
+  <p><strong>Rate:</strong> <%= @rate[:rate] %></p>
+  <div class="btn"><%= link_to "Go back to all rates", api_v1_exchange_rates_path %></div>
+</div>

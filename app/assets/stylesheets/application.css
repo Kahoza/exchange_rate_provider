@@ -5,8 +5,18 @@ body {
   padding: 0;
 }
 
-.index-table {
+.center-div {
   text-align: center;
+}
+
+.btn {
+  background: #8bde8e;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  display: inline-block;
+  a {
+    text-decoration: none;
+  }
 }
 
 h1 {

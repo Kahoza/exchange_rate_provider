@@ -47,7 +47,7 @@ class FetchCnbExchangeRates
 
     lines[2..].each do |line|
       values = line.split("|").map(&:strip)
-      next if values.size < 5 # Ensure the line has all necessary values
+      next if values.size < 5
 
       exchange_rates << {
         country: values[0],

@@ -5,10 +5,7 @@ module Api
 
       def index
         if @rates.nil? || @rates.empty?
-          respond_to do |format|
-            format.html { render plain: "Sorry, no exchange rates are available", status: :not_found }
-            format.json { render json: { error: "Sorry, no exchange rates are available" }, status: :not_found }
-          end
+          handle_not_found("No exchange rates are available")
         else
           respond_to do |format|
             format.html
@@ -17,12 +14,42 @@ module Api
         end
       rescue StandardError => e
         Rails.logger.error("Exchange rates fetch failed: #{e.message}")
+        handle_internal_error
+      end
 
+      def show
+        currency_code = params[:id].upcase
+        @rate = @rates.find { |rate| rate[:code] == currency_code }
+
+        if @rate
+          respond_to do |format|
+            format.html
+            format.json { render json: @rate, status: :ok }
+          end
+        else
+          handle_not_found("Currency not found")
+        end
+      rescue StandardError => e
+        Rails.logger.error("Failed to fetch exchange rate for #{currency_code}: #{e.message}")
+        handle_internal_error("Something went wrong, please try again later.")
+      end
+
+      private
+
+      def handle_not_found(message)
+        respond_to do |format|
+          format.html { render plain: "#{messasge}", status: :not_found }
+          format.json { render json: { error: "#{messasge}" }, status: :not_found }
+        end
+      end
+
+      def handle_internal_error
         respond_to do |format|
           format.html { render plain: "Something went wrong, please try again later.", status: :internal_server_error }
           format.json { render json: { error: "Something went wrong, please try again later." }, status: :internal_server_error }
         end
       end
+
 
       private
 

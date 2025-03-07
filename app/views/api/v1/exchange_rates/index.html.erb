@@ -1,4 +1,4 @@
-<div class="index-table">
+<div class="center-div">
   <h1>Exchange Rates</h1>
   <table>
     <tr>
@@ -13,7 +13,7 @@
         <td><%= rate[:country] %></td>
         <td><%= rate[:currency] %></td>
         <td><%= rate[:amount] %></td>
-        <td><%= rate[:code]%></td>
+        <td><%= link_to rate[:code], api_v1_exchange_rate_path(rate[:code]) %></td>
         <td><%= rate[:rate] %></td>
       </tr>
     <% end %>
