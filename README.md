@@ -35,3 +35,6 @@ The API expose the following endpoints;
 params.require(:exchange_rate).permit(:amount, :currency)
 ```
 - Look at the comments in the code to apply the changes.
+- Show better error when currency is not found. When the user types the currency directly in the URL, instead of selecting the currency from the index view table. 
+- Add a button to go to the convert endpoint.
+- When the user tries to type letters instead of numbers in the form in the convert endpoint, show a message instead of not doing anything.
