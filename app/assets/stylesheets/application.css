@@ -19,6 +19,10 @@ body {
   }
 }
 
+form div {
+  margin-bottom: 10px;
+}
+
 h1 {
   color: #333;
 }
@@ -44,4 +48,68 @@ th {
 th {
   background-color: #8bde8e;
   color: white;
+}
+
+.centered-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.form-container {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+}
+
+.form-container label,
+.form-container input,
+.form-container select,
+.form-container button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.form-container button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background-color: #0056b3;
+}
+
+#converted-amount {
+  margin-top: 20px;
+  font-size: 1rem;
+}
+
+#rate-breakdown {
+  font-size: 0.9rem;
+  color: gray;
+}
+
+#amount-input-section {
+  input {
+    inline-size: auto;
+  }
+}
+
+/* Remove arrows from number input in convert view*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
 }

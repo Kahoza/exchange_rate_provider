@@ -34,12 +34,38 @@ module Api
         handle_internal_error("Something went wrong, please try again later.")
       end
 
+      def convert
+        @selected_currency = nil
+        @input_amount = nil
+        @converted_amount = nil
+
+        if request.post?
+          @input_amount = params[:amount].to_f || "EUR"
+          @selected_currency = params[:currency].to_s.upcase || "EUR"
+          @rate = @rates.find { |r| r[:code] == @selected_currency }
+          if @rate.nil?
+            return handle_not_found("Currency not found")
+          elsif @input_amount <= 0
+            return handle_invalid_amount
+          end
+
+          @converted_amount = (@input_amount * @rate[:rate]).round(2)
+          respond_to do |format|
+            format.html { render :convert }
+            format.json { render json: conversion_result, status: :ok }
+          end
+        end
+      rescue StandardError => e
+        Rails.logger.error("Currency conversion failed: #{e.message}")
+        handle_internal_error
+      end
+
       private
 
       def handle_not_found(message)
         respond_to do |format|
-          format.html { render plain: "#{messasge}", status: :not_found }
-          format.json { render json: { error: "#{messasge}" }, status: :not_found }
+          format.html { render plain: "#{message}", status: :not_found }
+          format.json { render json: { error: "#{message}" }, status: :not_found }
         end
       end
 
@@ -47,6 +73,14 @@ module Api
         respond_to do |format|
           format.html { render plain: "Something went wrong, please try again later.", status: :internal_server_error }
           format.json { render json: { error: "Something went wrong, please try again later." }, status: :internal_server_error }
+        end
+      end
+
+      def handle_invalid_amount
+        flash.now[:alert] = "Please enter a valid amount."
+        respond_to do |format|
+          format.html { render :convert, status: :unprocessable_entity }
+          format.json { render json: { error: "Please enter a valid amount." }, status: :unprocessable_entity }
         end
       end
 

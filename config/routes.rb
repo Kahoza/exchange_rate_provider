@@ -3,7 +3,12 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :exchange_rates, only: [ :index, :show ]
+      resources :exchange_rates, only: [ :index, :show ] do
+        collection do
+          get :convert
+          post :convert
+        end
+      end
     end
   end
 end

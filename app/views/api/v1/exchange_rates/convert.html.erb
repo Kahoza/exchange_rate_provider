@@ -1,0 +1,25 @@
+<div class="centered-form">
+  <h1>Currency Converter</h1>
+  <div class="form-container">
+    <%= form_with url: convert_api_v1_exchange_rates_path, method: :post, remote: true do |form| %>
+      <div id='amount-input-section'>
+        <%= form.label :amount, "Amount" %>
+        <%= number_field_tag :amount, @input_amount, step: "0.01", required: true %>
+      </div>
+      <div id='currency-input-section'>
+        <%= form.label :currency, "Currency" %>
+        <%= select_tag :currency, options_for_select(@rates.map { |rate| [rate[:code], rate[:code]] }, @selected_currency), required: true %>
+      </div>
+      <%= form.submit "Convert" %>
+    <% end %>
+  </div>
+    <div id="converted-amount"> 
+      <% if @converted_amount %>
+        <p>Converted Amount: <%= @converted_amount %> CZK</p>
+      <% end %>
+      <% if @rate %>
+        <p id='rate-breakdown'><%= @rate[:amount] %> <%= @rate[:code] %> = <%= @rate[:rate] %> CZK</p>
+      <% end %>
+    </div> 
+    <div class="btn"><%= link_to "Go back to all rates", api_v1_exchange_rates_path %></div>
+</div>

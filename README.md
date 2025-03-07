@@ -23,9 +23,11 @@ The service to fetch the exchange rates is cached for 24 hours, as the input fil
 The API expose the following endpoints;
 - `/api/v1/exchange_rates` → Lists all the currencies exchange rate
 - `/api/v1/exchange_rates/currency` → Displays the exchange rate for a specific currency
+- `/api/v1/exchange_rates/convert` → Displays a form accepting an amount and dropdown to select the currency and returns the exchange of said amount in CZK 
 
 ### Future improvements
 - Provides Swagger documentation and testing endpoints.
 - Provide better styling in the views 
   - Use font-size instead of h1
   - Add classes for styling 
+- Enhance form protection. At the moment we use `form_for`to get the input from the user and process the exchange rate request, and though the form comes with built in security, we could further protect the application by validating the inputs or using strong parameters in the controllers to avoid data injection. 
